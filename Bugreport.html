@@ -1,0 +1,605 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Bug Report Library</title>
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: Arial, Helvetica, sans-serif;
+    }
+
+    body {
+      background: #070b14;
+      color: #f5f7ff;
+      min-height: 100vh;
+    }
+
+    /* HEADER */
+    header {
+      background: linear-gradient(135deg, #0b1220, #101a2f);
+      border-bottom: 1px solid #1f2d45;
+      padding: 55px 20px;
+      text-align: center;
+    }
+
+    .logo {
+      font-size: 42px;
+      margin-bottom: 12px;
+    }
+
+    header h1 {
+      font-size: 38px;
+      margin-bottom: 10px;
+    }
+
+    header h1 span {
+      color: #00ff88;
+    }
+
+    header p {
+      color: #9ca9bd;
+      font-size: 16px;
+    }
+
+    /* CONTAINER */
+    .container {
+      width: 92%;
+      max-width: 1150px;
+      margin: 35px auto;
+    }
+
+    /* STATS */
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
+      margin-bottom: 30px;
+    }
+
+    .stat {
+      background: #0d1422;
+      border: 1px solid #1d2a40;
+      border-radius: 14px;
+      padding: 22px;
+      text-align: center;
+    }
+
+    .stat h2 {
+      color: #00ff88;
+      font-size: 30px;
+      margin-bottom: 5px;
+    }
+
+    .stat p {
+      color: #8996aa;
+    }
+
+    /* CONTROLS */
+    .controls {
+      display: grid;
+      grid-template-columns: 1fr 200px 200px;
+      gap: 12px;
+      margin-bottom: 25px;
+    }
+
+    input,
+    select {
+      width: 100%;
+      padding: 14px 16px;
+      border-radius: 10px;
+      border: 1px solid #263752;
+      background: #0d1422;
+      color: white;
+      outline: none;
+      font-size: 15px;
+    }
+
+    input:focus,
+    select:focus {
+      border-color: #00ff88;
+    }
+
+    /* REPORT CARD */
+    .reports {
+      display: grid;
+      gap: 16px;
+    }
+
+    .report {
+      background: #0d1422;
+      border: 1px solid #1d2a40;
+      border-radius: 14px;
+      padding: 22px;
+      transition: 0.25s;
+    }
+
+    .report:hover {
+      transform: translateY(-3px);
+      border-color: #00ff88;
+      box-shadow: 0 8px 30px rgba(0, 255, 136, 0.08);
+    }
+
+    .report-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 15px;
+      margin-bottom: 12px;
+    }
+
+    .report h3 {
+      font-size: 21px;
+    }
+
+    .category {
+      color: #9ca9bd;
+      margin-bottom: 15px;
+      font-size: 14px;
+    }
+
+    .severity {
+      padding: 6px 11px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: bold;
+      white-space: nowrap;
+    }
+
+    .critical {
+      background: #5d1720;
+      color: #ff6b7a;
+    }
+
+    .high {
+      background: #55270f;
+      color: #ff9d5c;
+    }
+
+    .medium {
+      background: #51460c;
+      color: #ffe45c;
+    }
+
+    .low {
+      background: #123d2c;
+      color: #55e89b;
+    }
+
+    .info {
+      background: #182c4d;
+      color: #70a9ff;
+    }
+
+    .report-meta {
+      color: #78879e;
+      font-size: 13px;
+      margin-bottom: 15px;
+    }
+
+    .view-btn {
+      display: inline-block;
+      text-decoration: none;
+      background: #00ff88;
+      color: #06110b;
+      padding: 10px 16px;
+      border-radius: 8px;
+      font-weight: bold;
+      transition: 0.2s;
+    }
+
+    .view-btn:hover {
+      background: #63ffb3;
+      transform: translateY(-1px);
+    }
+
+    /* EMPTY */
+    .empty {
+      display: none;
+      text-align: center;
+      padding: 50px;
+      color: #7f8da3;
+    }
+
+    /* FOOTER */
+    footer {
+      text-align: center;
+      padding: 35px 20px;
+      color: #68758a;
+      border-top: 1px solid #182338;
+      margin-top: 50px;
+    }
+
+    footer span {
+      color: #00ff88;
+    }
+
+    /* MOBILE */
+    @media (max-width: 750px) {
+      header {
+        padding: 40px 15px;
+      }
+
+      header h1 {
+        font-size: 29px;
+      }
+
+      .logo {
+        font-size: 35px;
+      }
+
+      .stats {
+        grid-template-columns: 1fr;
+      }
+
+      .controls {
+        grid-template-columns: 1fr;
+      }
+
+      .report-top {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- HEADER -->
+  <header>
+    <div class="logo">🛡️</div>
+
+    <h1>
+      Bug <span>Report</span> Library
+    </h1>
+
+    <p>
+      A collection of security research and bug bounty reports
+    </p>
+  </header>
+
+
+  <main class="container">
+
+    <!-- STATISTICS -->
+    <section class="stats">
+
+      <div class="stat">
+        <h2 id="totalReports">0</h2>
+        <p>Total Reports</p>
+      </div>
+
+      <div class="stat">
+        <h2 id="totalHigh">0</h2>
+        <p>High / Critical</p>
+      </div>
+
+      <div class="stat">
+        <h2 id="totalCategories">0</h2>
+        <p>Categories</p>
+      </div>
+
+    </section>
+
+
+    <!-- SEARCH & FILTER -->
+    <section class="controls">
+
+      <input
+        type="text"
+        id="search"
+        placeholder="🔎 Search bug reports..."
+      >
+
+      <select id="categoryFilter">
+        <option value="all">All Categories</option>
+      </select>
+
+      <select id="severityFilter">
+        <option value="all">All Severity</option>
+        <option value="Critical">Critical</option>
+        <option value="High">High</option>
+        <option value="Medium">Medium</option>
+        <option value="Low">Low</option>
+        <option value="Informational">Informational</option>
+      </select>
+
+    </section>
+
+
+    <!-- REPORTS -->
+    <section class="reports" id="reports"></section>
+
+    <div class="empty" id="empty">
+      <h3>No reports found</h3>
+      <p>Try another search or filter.</p>
+    </div>
+
+  </main>
+
+
+  <!-- FOOTER -->
+  <footer>
+    <p>
+      © 2026 <span>Bug Report Library</span>
+      · Security Research Collection
+    </p>
+  </footer>
+
+
+  <script>
+
+    /*
+      ==========================================
+      ADD YOUR REPORTS HERE
+      ==========================================
+
+      শুধু নিচের list-এ নতুন report যোগ করবে।
+
+      title    = Report-এর নাম
+      category = Bug type
+      severity = Critical / High / Medium / Low / Informational
+      date     = Report date
+      url      = তোমার report-এর link
+    */
+
+    const reports = [
+
+      {
+        title: "Example IDOR Vulnerability",
+        category: "IDOR",
+        severity: "High",
+        date: "2026-09-14",
+        url: "https://example.com"
+      },
+
+      {
+        title: "Example Account Takeover",
+        category: "Account Takeover",
+        severity: "Critical",
+        date: "2026-09-13",
+        url: "https://example.com"
+      },
+
+      {
+        title: "Example Session Management Issue",
+        category: "Session Management",
+        severity: "Medium",
+        date: "2026-09-12",
+        url: "https://example.com"
+      },
+
+      {
+        title: "Example Information Disclosure",
+        category: "Information Disclosure",
+        severity: "Low",
+        date: "2026-09-10",
+        url: "https://example.com"
+      }
+
+    ];
+
+
+    const reportsContainer =
+      document.getElementById("reports");
+
+    const search =
+      document.getElementById("search");
+
+    const categoryFilter =
+      document.getElementById("categoryFilter");
+
+    const severityFilter =
+      document.getElementById("severityFilter");
+
+    const empty =
+      document.getElementById("empty");
+
+
+    /*
+      ==========================================
+      CATEGORY FILTER
+      ==========================================
+    */
+
+    const categories =
+      [...new Set(reports.map(report => report.category))];
+
+    categories.forEach(category => {
+
+      const option =
+        document.createElement("option");
+
+      option.value = category;
+      option.textContent = category;
+
+      categoryFilter.appendChild(option);
+
+    });
+
+
+    /*
+      ==========================================
+      STATISTICS
+      ==========================================
+    */
+
+    document.getElementById("totalReports")
+      .textContent = reports.length;
+
+    document.getElementById("totalHigh")
+      .textContent =
+      reports.filter(
+        report =>
+          report.severity === "High" ||
+          report.severity === "Critical"
+      ).length;
+
+    document.getElementById("totalCategories")
+      .textContent = categories.length;
+
+
+    /*
+      ==========================================
+      DISPLAY REPORTS
+      ==========================================
+    */
+
+    function displayReports() {
+
+      const searchText =
+        search.value.toLowerCase();
+
+      const selectedCategory =
+        categoryFilter.value;
+
+      const selectedSeverity =
+        severityFilter.value;
+
+
+      const filtered =
+        reports.filter(report => {
+
+          const matchesSearch =
+            report.title
+              .toLowerCase()
+              .includes(searchText) ||
+
+            report.category
+              .toLowerCase()
+              .includes(searchText);
+
+
+          const matchesCategory =
+            selectedCategory === "all" ||
+            report.category === selectedCategory;
+
+
+          const matchesSeverity =
+            selectedSeverity === "all" ||
+            report.severity === selectedSeverity;
+
+
+          return (
+            matchesSearch &&
+            matchesCategory &&
+            matchesSeverity
+          );
+
+        });
+
+
+      reportsContainer.innerHTML = "";
+
+
+      if (filtered.length === 0) {
+
+        empty.style.display = "block";
+
+        return;
+
+      }
+
+      empty.style.display = "none";
+
+
+      filtered.forEach(report => {
+
+        const card =
+          document.createElement("article");
+
+        card.className = "report";
+
+
+        const severityClass =
+          report.severity
+            .toLowerCase()
+            .replace("informational", "info");
+
+
+        card.innerHTML = `
+
+          <div class="report-top">
+
+            <h3>
+              ${report.title}
+            </h3>
+
+            <span class="severity ${severityClass}">
+              ${report.severity}
+            </span>
+
+          </div>
+
+
+          <div class="category">
+            🏷️ ${report.category}
+          </div>
+
+
+          <div class="report-meta">
+            📅 ${report.date}
+          </div>
+
+
+          <a
+            class="view-btn"
+            href="${report.url}"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            🔗 View Report
+          </a>
+
+        `;
+
+
+        reportsContainer.appendChild(card);
+
+      });
+
+    }
+
+
+    /*
+      ==========================================
+      SEARCH & FILTER EVENTS
+      ==========================================
+    */
+
+    search.addEventListener(
+      "input",
+      displayReports
+    );
+
+    categoryFilter.addEventListener(
+      "change",
+      displayReports
+    );
+
+    severityFilter.addEventListener(
+      "change",
+      displayReports
+    );
+
+
+    /*
+      ==========================================
+      START
+      ==========================================
+    */
+
+    displayReports();
+
+  </script>
+
+</body>
+</html>
+```
